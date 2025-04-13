@@ -95,6 +95,69 @@ export function getKnightMoves(startingSquareId, pieceColor, legalSquares, isSqu
     }
 }
 
-// export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
-//     moveToEighthRank
-// }
+export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+    const file = startingSquareId.charAt(0);
+    const rank = startingSquareId.charAt(1);
+    const rankNumber = parseInt(rank);
+    
+    moveToEighthRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToAFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToHFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
+}
+
+function moveToEighthRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {   
+    while (currentRank != 8) {
+        currentRank++;
+        let currentSquareId = file + currentRank;
+        let currentSquare = document.getElementById(currentSquareId);
+        let squareContent = isSquareOccupiedFn(currentSquare);
+
+        if (squareContent != "blank" && squareContent == pieceColor) return;
+        legalSquares.push(currentSquareId);
+
+        if (squareContent != "blank" && squareContent != pieceColor) return;
+    }
+}
+
+function moveToFirstRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (currentRank != 1) {
+        currentRank--;
+        let currentSquareId = file + currentRank;
+        let currentSquare = document.getElementById(currentSquareId);
+        let squareContent = isSquareOccupiedFn(currentSquare);
+
+        if (squareContent != "blank" && squareContent == pieceColor) return;
+        legalSquares.push(currentSquareId);
+
+        if (squareContent != "blank" && squareContent != pieceColor) return;
+    }
+}
+
+function moveToAFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (currentFile != "a") {
+        currentFile = String.fromCharCode(currentFile.charCodeAt(currentFile.length - 1) - 1);
+        let currentSquareId = currentFile + rank;
+        let currentSquare = document.getElementById(currentSquareId);
+        let squareContent = isSquareOccupiedFn(currentSquare);
+
+        if (squareContent != "blank" && squareContent == pieceColor) return;
+        legalSquares.push(currentSquareId);
+
+        if (squareContent != "blank" && squareContent != pieceColor) return;
+    }
+}
+
+function moveToHFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (currentFile != "h") {
+        currentFile = String.fromCharCode(currentFile.charCodeAt(currentFile.length - 1) + 1);
+        let currentSquareId = currentFile + rank;
+        let currentSquare = document.getElementById(currentSquareId);
+        let squareContent = isSquareOccupiedFn(currentSquare);
+
+        if (squareContent != "blank" && squareContent == pieceColor) return;
+        legalSquares.push(currentSquareId);
+
+        if (squareContent != "blank" && squareContent != pieceColor) return;
+    }
+}
