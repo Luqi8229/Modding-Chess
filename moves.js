@@ -51,8 +51,8 @@ function checkPawnForwardMoves(startingSquareId, pieceColor, legalSquares, isSqu
     // checks if square directly infront is occupied
     // and if it is, there are no legal moves for that pawn
     if (squareContent != "blank") return;
-
     legalSquares.push(currentSquareId);
+
     if (rankNumber != 2 && rankNumber != 7) return;
 
     currentRank += direction;
@@ -95,6 +95,7 @@ export function getKnightMoves(startingSquareId, pieceColor, legalSquares, isSqu
     }
 }
 
+
 export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
     const file = startingSquareId.charAt(0);
     const rank = startingSquareId.charAt(1);
@@ -121,6 +122,8 @@ function findRookMoves(file, rank, pieceColor, legalSquares, isSquareOccupiedFn)
 function moveToEighthRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {   
     while (currentRank < 8) {
         currentRank++;
+
+        // stop finding moves when it finds another piece
         if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
@@ -128,6 +131,8 @@ function moveToEighthRank(file, currentRank, pieceColor, legalSquares, isSquareO
 function moveToFirstRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
     while (currentRank > 1) {
         currentRank--;
+
+        // stop finding moves when it finds another piece
         if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
@@ -135,6 +140,8 @@ function moveToFirstRank(file, currentRank, pieceColor, legalSquares, isSquareOc
 function moveToAFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
     while (currentFile > "a") {
         currentFile = String.fromCharCode(currentFile.charCodeAt(0) - 1);
+
+        // stop finding moves when it finds another piece
         if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
@@ -142,6 +149,8 @@ function moveToAFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupi
 function moveToHFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
     while (currentFile < "h") {
         currentFile = String.fromCharCode(currentFile.charCodeAt(0) + 1);
+
+        // stop finding moves when it finds another piece
         if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
