@@ -53,17 +53,17 @@ function drop(ev) {
     let data = ev.dataTransfer.getData("text");
     const piece = document.getElementById(data);
     const destinationSquare = ev.currentTarget;
-    let destinationSquareID = destinationSquare.id;
+    let destinationSquareId = destinationSquare.id;
 
     // allow pieces to be captured
-    if (( isSquareOccupied(destinationSquare) == "blank") && (legalSquares.includes(destinationSquareID)) ) {
+    if ((isSquareOccupied(destinationSquare) == "blank") && (legalSquares.includes(destinationSquareId)) ) {
         destinationSquare.appendChild(piece);
         isWhiteTurn = !isWhiteTurn;
         legalSquares.length = 0;
         return;
     }
 
-    if ((isSquareOccupied(destinationSquare) != "blank") && (legalSquares.includes(destinationSquareID))) {
+    if ((isSquareOccupied(destinationSquare) != "blank") && (legalSquares.includes(destinationSquareId))) {
         while (destinationSquare.firstChild) {
             destinationSquare.removeChild(destinationSquare.firstChild);
         }
@@ -94,7 +94,7 @@ function isSquareOccupied(square) {
 
 function getPawnMoves(startingSquareId, pieceColor) {
     checkPawnDiagonalCaptures(startingSquareId, pieceColor);
-    checkPawForwardMoves(startingSquareId, pieceColor);
+    checkPawnForwardMoves(startingSquareId, pieceColor);
 }
 
 function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
@@ -109,7 +109,7 @@ function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
     const direction = pieceColor == "white" ? 1: -1;
 
     currentRank += direction;
-    for (let i = -1; i <= i; i += 2) {
+    for (let i = -1; i <= 1; i += 2) {
         currentFile = String.fromCharCode(file.charCodeAt(0) + i);
 
         if (currentFile >= "a" && currentFile <= "h") {
@@ -118,12 +118,12 @@ function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
             squareContent = isSquareOccupied(currentSquare);
             
             if (squareContent != "blank" &&  squareContent != pieceColor)
-                    legalSquares.push(currentSquareId);
+                legalSquares.push(currentSquareId);
         }
     }
 }
 
-function checkPawForwardMoves(startingSquareId, pieceColor) {
+function checkPawnForwardMoves(startingSquareId, pieceColor) {
     const file = startingSquareId.charAt(0);
     const rank = startingSquareId.charAt(1);
     const rankNumber = parseInt(rank);
