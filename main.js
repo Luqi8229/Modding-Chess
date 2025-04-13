@@ -1,4 +1,5 @@
 let legalSquares = [];
+let isWhiteTurn = true;
 const boardSquares = document.getElementsByClassName("square");
 const pieces = document.getElementsByClassName("piece");
 const piecesImages = document.getElementsByTagName("img");
@@ -35,7 +36,16 @@ function allowDrop(ev) {
 
 function drag(ev) {
     const piece = ev.target;
-    ev.dataTransfer.setData("text", piece.id);
+    const pieceColor = piece.getAttribute("color");
+    if ((isWhiteTurn && pieceColor == "white") || (!isWhiteTurn && pieceColor == "black")) {
+        
+        ev.dataTransfer.setData("text", piece.id);
+
+        // getting possible moves
+        const startingSquareId = piece.parentNode.id;
+        getPossibleMoves(startingSquareId, piece);
+    
+    }
 }
 
 function drop(ev) {
@@ -44,6 +54,104 @@ function drop(ev) {
     const piece = document.getElementById(data);
     const destinationSquare = ev.currentTarget;
     let destinationSquareID = destinationSquare.id;
+
+    // allow pieces to be captured
+    if (( isSquareOccupied(destinationSquare) == "blank") && (legalSquares.includes(destinationSquareID)) ) {
+        destinationSquare.appendChild(piece);
+        isWhiteTurn = !isWhiteTurn;
+        legalSquares.length = 0;
+        return;
+    }
+
+    if ((isSquareOccupied(destinationSquare) != "blank") && (legalSquares.includes(destinationSquareID))) {
+        while (destinationSquare.firstChild) {
+            destinationSquare.removeChild(destinationSquare.firstChild);
+        }
+        destinationSquare.appendChild(piece);
+        isWhiteTurn = !isWhiteTurn;
+        legalSquares.length = 0;
+        return;
+    }
+}
+
+function getPossibleMoves(startingSquareId, piece) {
+    const pieceColor = piece.getAttribute("color");
+    if (piece.classList.contains("pawn")) {
+        getPawnMoves(startingSquareId, pieceColor);
+    }
+}
+
+function isSquareOccupied(square) {
+    // checks if square is blank 
+    if (square.querySelector(".piece")) {
+        const color = square.querySelector(".piece").getAttribute("color");
+        return color;
+    }
+    else {
+        return "blank";
+    }
+}
+
+function getPawnMoves(startingSquareId, pieceColor) {
+    checkPawnDiagonalCaptures(startingSquareId, pieceColor);
+    checkPawForwardMoves(startingSquareId, pieceColor);
+}
+
+function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
+    const file = startingSquareId.charAt(0);
+    const rank = startingSquareId.charAt(1);
+    const rankNumber = parseInt(rank);
+    let currentFile = file;
+    let currentRank = rankNumber;
+    let currentSquareId = currentFile + currentRank;
+    let currentSquare = document.getElementById(currentSquareId);
+    let squareContent = isSquareOccupied(currentSquare);
+    const direction = pieceColor == "white" ? 1: -1;
+
+    currentRank += direction;
+    for (let i = -1; i <= i; i += 2) {
+        currentFile = String.fromCharCode(file.charCodeAt(0) + i);
+
+        if (currentFile >= "a" && currentFile <= "h") {
+            currentSquareId = currentFile + currentRank;
+            currentSquare = document.getElementById(currentSquareId);
+            squareContent = isSquareOccupied(currentSquare);
+            
+            if (squareContent != "blank" &&  squareContent != pieceColor)
+                    legalSquares.push(currentSquareId);
+        }
+    }
+}
+
+function checkPawForwardMoves(startingSquareId, pieceColor) {
+    const file = startingSquareId.charAt(0);
+    const rank = startingSquareId.charAt(1);
+    const rankNumber = parseInt(rank);
+    let currentFile = file;
+    let currentRank = rankNumber;
+    let currentSquareId = currentFile + currentRank;
+    let currentSquare = document.getElementById(currentSquareId);
+    let squareContent = isSquareOccupied(currentSquare);
+    const direction = pieceColor == "white" ? 1 : -1;
+
+    currentRank += direction;
+    currentSquareId = currentFile + currentRank;
+    currentSquare = document.getElementById(currentSquareId);
+    squareContent = isSquareOccupied(currentSquare);
+
+    // checks if square directly infront is occupied
+    // and if it is, there are no legal moves for that pawn
+    if (squareContent != "blank") return;
     
-    destinationSquare.appendChild(piece);
+    legalSquares.push(currentSquareId);
+    if (rankNumber != 2 && rankNumber != 7) return;
+
+    currentRank += direction;
+    currentSquareId = currentFile + currentRank;
+    currentSquare = document.getElementById(currentSquareId);
+    squareContent = isSquareOccupied(currentSquare);
+
+    if (squareContent != "blank") return;
+    legalSquares.push(currentSquareId);
+    
 }
