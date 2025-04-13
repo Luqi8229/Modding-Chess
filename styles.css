@@ -68,6 +68,10 @@ body {
     height: auto;
 }
 
+.highlight {
+    outline: 3px solid rgb(239, 239, 150);
+}
+
 @media (min-width:600px) {
     .chessBoard {
         width: 600px;

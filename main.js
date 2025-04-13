@@ -48,8 +48,15 @@ function drag(ev) {
         // getting possible moves
         const startingSquareId = piece.parentNode.id;
         getPossibleMoves(startingSquareId, piece);
+
+        // highlighting possible moves
+        legalSquares.forEach(squareId => {
+            const square = document.getElementById(squareId);
+            square.classList.add('highlight');
+        });
     
     }
+    console.log('is White turn : ', isWhiteTurn);
 }
 
 function drop(ev) {
@@ -63,19 +70,29 @@ function drop(ev) {
     if ((isSquareOccupied(destinationSquare) == "blank") && (legalSquares.includes(destinationSquareId)) ) {
         destinationSquare.appendChild(piece);
         isWhiteTurn = !isWhiteTurn;
-        legalSquares.length = 0;
-        return;
+        // legalSquares.length = 0;
+        // return;
     }
-
-    if ((isSquareOccupied(destinationSquare) != "blank") && (legalSquares.includes(destinationSquareId))) {
+    else if ((isSquareOccupied(destinationSquare) != "blank") && (legalSquares.includes(destinationSquareId))) {
         while (destinationSquare.firstChild) {
             destinationSquare.removeChild(destinationSquare.firstChild);
         }
         destinationSquare.appendChild(piece);
         isWhiteTurn = !isWhiteTurn;
-        legalSquares.length = 0;
-        return;
+        // legalSquares.length = 0;
+        // return;
     }
+
+    legalSquares.length = 0;
+    
+    // clean up highlights;
+    clearHighlights();
+}
+
+function clearHighlights() {
+    document.querySelectorAll('.highlight').forEach(square => {
+        square.classList.remove('highlight');
+    });
 }
 
 function getPossibleMoves(startingSquareId, piece) {
@@ -84,6 +101,8 @@ function getPossibleMoves(startingSquareId, piece) {
         getPawnMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
     if (piece.classList.contains("knight"))
         getKnightMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
+    // if (piece.classList.contains("rook"))
+    //     getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
 }
 
 function isSquareOccupied(square) {

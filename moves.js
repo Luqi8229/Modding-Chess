@@ -94,3 +94,7 @@ export function getKnightMoves(startingSquareId, pieceColor, legalSquares, isSqu
         }
     }
 }
+
+// export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+//     moveToEighthRank
+// }
