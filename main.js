@@ -117,6 +117,8 @@ function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
             currentSquare = document.getElementById(currentSquareId);
             squareContent = isSquareOccupied(currentSquare);
             
+            // if a piece is occupying a space diagonal to pawn,
+            //   capture
             if (squareContent != "blank" &&  squareContent != pieceColor)
                 legalSquares.push(currentSquareId);
         }
@@ -151,7 +153,8 @@ function checkPawnForwardMoves(startingSquareId, pieceColor) {
     currentSquare = document.getElementById(currentSquareId);
     squareContent = isSquareOccupied(currentSquare);
 
+    // what does repeating this line do?
     if (squareContent != "blank") return;
     legalSquares.push(currentSquareId);
-    
+
 }
