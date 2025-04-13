@@ -101,10 +101,7 @@ export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquar
     const rank = startingSquareId.charAt(1);
     const rankNumber = parseInt(rank);
     
-    moveToEighthRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToFirstRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToAFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToHFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
+    getStraightMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
 }
 
 function findExtendedMoves(file, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
@@ -160,10 +157,7 @@ export function getBishopMoves(startingSquareId, pieceColor, legalSquares, isSqu
     const rank = startingSquareId.charAt(1);
     const rankNumber = parseInt(rank);
 
-    moveToEighthRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToEighthRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToFirstRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
-    moveToFirstRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    getDiagonalMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
 }
 
 function moveToEighthRankAFile(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
@@ -209,4 +203,27 @@ function moveToFirstRankHFile(currentFile, currentRank, pieceColor, legalSquares
 
         if (!findExtendedMoves(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
+}
+
+function getStraightMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn) {
+    moveToEighthRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRank(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+}
+
+function getDiagonalMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn) {
+    moveToEighthRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToEighthRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+}
+
+export function getQueenMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+    const file = startingSquareId.charAt(0);
+    const rank = startingSquareId.charAt(1);
+    const rankNumber = parseInt(rank);
+    
+    getStraightMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    getDiagonalMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
 }
