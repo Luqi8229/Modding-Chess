@@ -1,4 +1,4 @@
-import { getPawnMoves } from './moves.js'
+import { getPawnMoves, getKnightMoves } from './moves.js'
 
 let legalSquares = [];
 let isWhiteTurn = true;
@@ -19,6 +19,7 @@ function setupBoardSquares() {
         let square = boardSquares[i];
         square.id = column + row;
     }
+    console.log(document.querySelectorAll('.square').length);
 }
 
 function setupPieces() {
@@ -39,6 +40,7 @@ function allowDrop(ev) {
 function drag(ev) {
     const piece = ev.target;
     const pieceColor = piece.getAttribute("color");
+    console.log('Drag started for:', piece);  // Debugging log
     if ((isWhiteTurn && pieceColor == "white") || (!isWhiteTurn && pieceColor == "black")) {
         
         ev.dataTransfer.setData("text", piece.id);
@@ -78,9 +80,10 @@ function drop(ev) {
 
 function getPossibleMoves(startingSquareId, piece) {
     const pieceColor = piece.getAttribute("color");
-    if (piece.classList.contains("pawn")) {
+    if (piece.classList.contains("pawn"))
         getPawnMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
-    }
+    if (piece.classList.contains("knight"))
+        getKnightMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
 }
 
 function isSquareOccupied(square) {

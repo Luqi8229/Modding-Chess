@@ -1,7 +1,5 @@
-// import { isWhiteTurn, boardSquares, pieces, piecesImage } from './main.js'
 
 export function getPawnMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
-    console.log("getPawnMoves fired:", startingSquareId, pieceColor);
     checkPawnDiagonalCaptures(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn);
     checkPawnForwardMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn);
 }
@@ -66,4 +64,33 @@ function checkPawnForwardMoves(startingSquareId, pieceColor, legalSquares, isSqu
     if (squareContent != "blank") return;
     legalSquares.push(currentSquareId);
 
+}
+
+
+
+export function getKnightMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+    // ASCI 'a' is 97
+    const file = startingSquareId.charCodeAt(0) - 97; // a => 0
+    const rank = startingSquareId.charAt(1); // 2 => 2
+    const rankNumber = parseInt(rank);
+
+    const moves = [
+        [-2, 1], [-1, 2], [1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1],
+    ];
+
+
+    for (const [df, dr] of moves) {
+        let currentFile = file + df;
+        let currentRank = rankNumber + dr;
+
+        if (currentFile >= 0 && currentFile <= 7 && currentRank > 0 && currentRank <= 8) {
+            let currentSquareId = String.fromCharCode(currentFile + 97) + currentRank;
+            let currentSquare = document.getElementById(currentSquareId);
+            let squareContent = isSquareOccupiedFn(currentSquare);
+
+            if (squareContent != "blank" && squareContent == pieceColor) return;
+
+            legalSquares.push(currentSquareId);
+        }
+    }
 }
