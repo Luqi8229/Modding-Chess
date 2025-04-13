@@ -106,58 +106,42 @@ export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquar
     moveToHFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
 }
 
+function findRookMoves(file, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    let currentSquareId = file + rank;
+    let currentSquare = document.getElementById(currentSquareId);
+    let squareContent = isSquareOccupiedFn(currentSquare);
+
+    if (squareContent != "blank" && squareContent == pieceColor) return false;
+    legalSquares.push(currentSquareId);
+
+    if (squareContent != "blank" && squareContent != pieceColor) return false;
+    return true;
+}
+
 function moveToEighthRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {   
-    while (currentRank != 8) {
+    while (currentRank < 8) {
         currentRank++;
-        let currentSquareId = file + currentRank;
-        let currentSquare = document.getElementById(currentSquareId);
-        let squareContent = isSquareOccupiedFn(currentSquare);
-
-        if (squareContent != "blank" && squareContent == pieceColor) return;
-        legalSquares.push(currentSquareId);
-
-        if (squareContent != "blank" && squareContent != pieceColor) return;
+        if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
 function moveToFirstRank(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
-    while (currentRank != 1) {
+    while (currentRank > 1) {
         currentRank--;
-        let currentSquareId = file + currentRank;
-        let currentSquare = document.getElementById(currentSquareId);
-        let squareContent = isSquareOccupiedFn(currentSquare);
-
-        if (squareContent != "blank" && squareContent == pieceColor) return;
-        legalSquares.push(currentSquareId);
-
-        if (squareContent != "blank" && squareContent != pieceColor) return;
+        if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
 function moveToAFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
-    while (currentFile != "a") {
-        currentFile = String.fromCharCode(currentFile.charCodeAt(currentFile.length - 1) - 1);
-        let currentSquareId = currentFile + rank;
-        let currentSquare = document.getElementById(currentSquareId);
-        let squareContent = isSquareOccupiedFn(currentSquare);
-
-        if (squareContent != "blank" && squareContent == pieceColor) return;
-        legalSquares.push(currentSquareId);
-
-        if (squareContent != "blank" && squareContent != pieceColor) return;
+    while (currentFile > "a") {
+        currentFile = String.fromCharCode(currentFile.charCodeAt(0) - 1);
+        if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
 function moveToHFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
-    while (currentFile != "h") {
-        currentFile = String.fromCharCode(currentFile.charCodeAt(currentFile.length - 1) + 1);
-        let currentSquareId = currentFile + rank;
-        let currentSquare = document.getElementById(currentSquareId);
-        let squareContent = isSquareOccupiedFn(currentSquare);
-
-        if (squareContent != "blank" && squareContent == pieceColor) return;
-        legalSquares.push(currentSquareId);
-
-        if (squareContent != "blank" && squareContent != pieceColor) return;
+    while (currentFile < "h") {
+        currentFile = String.fromCharCode(currentFile.charCodeAt(0) + 1);
+        if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
