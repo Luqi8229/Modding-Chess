@@ -1,10 +1,12 @@
+import { getPawnMoves } from './moves.js'
+
 let legalSquares = [];
 let isWhiteTurn = true;
 const boardSquares = document.getElementsByClassName("square");
 const pieces = document.getElementsByClassName("piece");
 const piecesImages = document.getElementsByTagName("img");
 
-// codify each square
+// codify each square   
 setupBoardSquares();
 setupPieces();
 
@@ -77,7 +79,7 @@ function drop(ev) {
 function getPossibleMoves(startingSquareId, piece) {
     const pieceColor = piece.getAttribute("color");
     if (piece.classList.contains("pawn")) {
-        getPawnMoves(startingSquareId, pieceColor);
+        getPawnMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
     }
 }
 
@@ -92,69 +94,4 @@ function isSquareOccupied(square) {
     }
 }
 
-function getPawnMoves(startingSquareId, pieceColor) {
-    checkPawnDiagonalCaptures(startingSquareId, pieceColor);
-    checkPawnForwardMoves(startingSquareId, pieceColor);
-}
 
-function checkPawnDiagonalCaptures(startingSquareId, pieceColor) {
-    const file = startingSquareId.charAt(0);
-    const rank = startingSquareId.charAt(1);
-    const rankNumber = parseInt(rank);
-    let currentFile = file;
-    let currentRank = rankNumber;
-    let currentSquareId = currentFile + currentRank;
-    let currentSquare = document.getElementById(currentSquareId);
-    let squareContent = isSquareOccupied(currentSquare);
-    const direction = pieceColor == "white" ? 1: -1;
-
-    currentRank += direction;
-    for (let i = -1; i <= 1; i += 2) {
-        currentFile = String.fromCharCode(file.charCodeAt(0) + i);
-
-        if (currentFile >= "a" && currentFile <= "h") {
-            currentSquareId = currentFile + currentRank;
-            currentSquare = document.getElementById(currentSquareId);
-            squareContent = isSquareOccupied(currentSquare);
-            
-            // if a piece is occupying a space diagonal to pawn,
-            //   capture
-            if (squareContent != "blank" &&  squareContent != pieceColor)
-                legalSquares.push(currentSquareId);
-        }
-    }
-}
-
-function checkPawnForwardMoves(startingSquareId, pieceColor) {
-    const file = startingSquareId.charAt(0);
-    const rank = startingSquareId.charAt(1);
-    const rankNumber = parseInt(rank);
-    let currentFile = file;
-    let currentRank = rankNumber;
-    let currentSquareId = currentFile + currentRank;
-    let currentSquare = document.getElementById(currentSquareId);
-    let squareContent = isSquareOccupied(currentSquare);
-    const direction = pieceColor == "white" ? 1 : -1;
-
-    currentRank += direction;
-    currentSquareId = currentFile + currentRank;
-    currentSquare = document.getElementById(currentSquareId);
-    squareContent = isSquareOccupied(currentSquare);
-
-    // checks if square directly infront is occupied
-    // and if it is, there are no legal moves for that pawn
-    if (squareContent != "blank") return;
-    
-    legalSquares.push(currentSquareId);
-    if (rankNumber != 2 && rankNumber != 7) return;
-
-    currentRank += direction;
-    currentSquareId = currentFile + currentRank;
-    currentSquare = document.getElementById(currentSquareId);
-    squareContent = isSquareOccupied(currentSquare);
-
-    // what does repeating this line do?
-    if (squareContent != "blank") return;
-    legalSquares.push(currentSquareId);
-
-}
