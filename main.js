@@ -1,4 +1,4 @@
-import { getPawnMoves, getKnightMoves, getRookMoves } from './moves.js'
+import { getPawnMoves, getKnightMoves, getRookMoves, getBishopMoves } from './moves.js'
 
 let legalSquares = [];
 let isWhiteTurn = true;
@@ -103,6 +103,8 @@ function getPossibleMoves(startingSquareId, piece) {
         getKnightMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
     if (piece.classList.contains("rook"))
         getRookMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
+    if (piece.classList.contains("bishop"))
+        getBishopMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
 }
 
 function isSquareOccupied(square) {

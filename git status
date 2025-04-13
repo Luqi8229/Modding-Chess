@@ -1,0 +1,10 @@
+[33m2882bd4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m added one line of comment for rookmoves
+[33m75337e1[m condensed rookmoves
+[33m246a10f[m rook pieces moveable
+[33m7d89bd2[m added highlights to possible moves plus reset highlights when select new piece
+[33m5aeeb66[m knight pieces moveable but breaks when starting with pawn
+[33m0174433[m[33m ([m[1;31morigin/main[m[33m)[m split code into two files for organization
+[33m02b1c5d[m pawn moves complete
+[33mfbee8d7[m Bug Fixed: line 112, i <= 1 NOT i <= i
+[33m99de725[m bug with getPawnMoves
+[33m15c01a3[m chessboard and chess pieces added + pieces are draggable

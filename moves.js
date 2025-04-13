@@ -107,7 +107,7 @@ export function getRookMoves(startingSquareId, pieceColor, legalSquares, isSquar
     moveToHFile(file, rank, pieceColor, legalSquares, isSquareOccupiedFn);
 }
 
-function findRookMoves(file, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
+function findExtendedMoves(file, rank, pieceColor, legalSquares, isSquareOccupiedFn) {
     let currentSquareId = file + rank;
     let currentSquare = document.getElementById(currentSquareId);
     let squareContent = isSquareOccupiedFn(currentSquare);
@@ -124,7 +124,7 @@ function moveToEighthRank(file, currentRank, pieceColor, legalSquares, isSquareO
         currentRank++;
 
         // stop finding moves when it finds another piece
-        if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+        if (!findExtendedMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
@@ -133,7 +133,7 @@ function moveToFirstRank(file, currentRank, pieceColor, legalSquares, isSquareOc
         currentRank--;
 
         // stop finding moves when it finds another piece
-        if (!findRookMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+        if (!findExtendedMoves(file, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
@@ -142,7 +142,7 @@ function moveToAFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupi
         currentFile = String.fromCharCode(currentFile.charCodeAt(0) - 1);
 
         // stop finding moves when it finds another piece
-        if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+        if (!findExtendedMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
 
@@ -151,6 +151,62 @@ function moveToHFile(currentFile, rank, pieceColor, legalSquares, isSquareOccupi
         currentFile = String.fromCharCode(currentFile.charCodeAt(0) + 1);
 
         // stop finding moves when it finds another piece
-        if (!findRookMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+        if (!findExtendedMoves(currentFile, rank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+    }
+}
+
+export function getBishopMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+    const file = startingSquareId.charAt(0);
+    const rank = startingSquareId.charAt(1);
+    const rankNumber = parseInt(rank);
+
+    moveToEighthRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToEighthRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRankAFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+    moveToFirstRankHFile(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+}
+
+function moveToEighthRankAFile(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
+
+    while ( !(currentFile == "a" || currentRank == 8)  ) {
+        currentFile = String.fromCharCode(
+            currentFile.charCodeAt(currentFile.length - 1) - 1
+        );
+        currentRank++;
+
+        if (!findExtendedMoves(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+    }
+}
+
+function moveToEighthRankHFile(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (!(currentFile == "h" || currentRank == 8)) {
+        currentFile = String.fromCharCode(
+            currentFile.charCodeAt(currentFile.length - 1) + 1
+        );
+        currentRank++;
+
+        if (!findExtendedMoves(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+    }
+}
+
+function moveToFirstRankAFile(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (!(currentFile == "a" || currentRank == 1)) {
+        currentFile = String.fromCharCode(
+            currentFile.charCodeAt(currentFile.length - 1) - 1
+        );
+        currentRank--;
+
+        if (!findExtendedMoves(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
+    }
+}
+
+function moveToFirstRankHFile(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn) {
+    while (!(currentFile == "h" || currentRank == 1)) {
+        currentFile = String.fromCharCode(
+            currentFile.charCodeAt(currentFile.length - 1) + 1
+        );
+        currentRank--;
+
+        if (!findExtendedMoves(currentFile, currentRank, pieceColor, legalSquares, isSquareOccupiedFn)) break;
     }
 }
