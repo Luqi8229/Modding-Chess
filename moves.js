@@ -83,12 +83,13 @@ export function getKnightMoves(startingSquareId, pieceColor, legalSquares, isSqu
         let currentFile = file + df;
         let currentRank = rankNumber + dr;
 
-        if (currentFile >= 0 && currentFile <= 7 && currentRank > 0 && currentRank <= 8) {
+        if (currentFile >= 0 && currentFile <= 7 && currentRank >= 1 && currentRank <= 8) {
             let currentSquareId = String.fromCharCode(currentFile + 97) + currentRank;
             let currentSquare = document.getElementById(currentSquareId);
             let squareContent = isSquareOccupiedFn(currentSquare);
 
-            if (squareContent != "blank" && squareContent == pieceColor) return;
+            // friendly piece
+            if (squareContent != "blank" && squareContent == pieceColor) continue;
 
             legalSquares.push(currentSquareId);
         }
@@ -226,4 +227,33 @@ export function getQueenMoves(startingSquareId, pieceColor, legalSquares, isSqua
     
     getStraightMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
     getDiagonalMoves(file, rankNumber, pieceColor, legalSquares, isSquareOccupiedFn);
+}
+
+
+export function getKingMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupiedFn) {
+    // ASCI 'a' is 97
+    const file = startingSquareId.charCodeAt(0) - 97; // a => 0
+    const rank = startingSquareId.charAt(1); // 2 => 2
+    const rankNumber = parseInt(rank);
+
+    const moves = [
+        [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1], [-1, 0], [1, 0],
+    ];
+
+
+    for (const [df, dr] of moves) {
+        let currentFile = file + df;
+        let currentRank = rankNumber + dr;
+
+        if (currentFile >= 0 && currentFile <= 7 && currentRank >= 1 && currentRank <= 8) {
+            let currentSquareId = String.fromCharCode(currentFile + 97) + currentRank;
+            let currentSquare = document.getElementById(currentSquareId);
+            let squareContent = isSquareOccupiedFn(currentSquare);
+
+            // friendly piece
+            if (squareContent != "blank" && squareContent == pieceColor) continue;
+
+            legalSquares.push(currentSquareId);
+        }
+    }
 }

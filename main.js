@@ -1,5 +1,5 @@
 import { getPawnMoves, getKnightMoves, getRookMoves, 
-    getBishopMoves, getQueenMoves
+    getBishopMoves, getQueenMoves, getKingMoves
  } from './moves.js'
 
 let legalSquares = [];
@@ -109,6 +109,8 @@ function getPossibleMoves(startingSquareId, piece) {
         getBishopMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
     if (piece.classList.contains("queen"))
         getQueenMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
+    if (piece.classList.contains("king"))
+        getKingMoves(startingSquareId, pieceColor, legalSquares, isSquareOccupied);
 }
 
 function isSquareOccupied(square) {
